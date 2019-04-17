@@ -160,19 +160,19 @@
 
          <tr class="success strong">
             <td colspan="4" class="moveRight">Subtotal</td>
-            <td >$1700</td>
+            <td class="money">$1700</td>
          </tr>
          <tr class="active strong">
             <td colspan="4" class="moveRight">Tax</td>
-            <td>$170</td>
+            <td class="money">$170</td>
          </tr>  
          <tr class="strong">
             <td colspan="4" class="moveRight">Shipping</td>
-            <td>$100</td>
+            <td class="money">$100</td>
          </tr> 
          <tr class="warning strong text-danger">
             <td colspan="4" class="moveRight">Grand Total</td>
-            <td>$1970</td>
+            <td class="money">$1970</td>
          </tr>    
          <tr >
             <td colspan="4" class="moveRight"><button type="button" class="btn btn-primary" >Continue Shopping</button></td>
@@ -259,6 +259,79 @@
       </div>
    </div>
 </footer>
+
+
+
+<script>
+      class Item{
+         constructor(file,product,quantity,price){
+            this.file=file;
+            this.product=product;
+            this.quantity=quantity;
+            this.price=price;
+         }
+      }
+      var item1=new Item('./images/art/tiny/116010.jpg','Artist Holding a Thistle',2,500);
+      var item2=new Item('./images/art/tiny/113010.jpg','Self-portrait in a Straw Hat',1,700);
+   
+      function genLine(item){
+         const table=document.querySelector("tbody");
+         var inputLine=document.createElement("tr");
+         var fileValue=document.createElement("td");
+         var productValue=document.createElement("td");
+         var quantityValue=document.createElement("td");
+         var priceValue=document.createElement("td");
+         var amountValue=document.createElement("td");
+         var img=document.createElement("img");
+         fileValue.appendChild(img);
+         img.src=item.file;
+         productValue.innerHTML=item.product;
+         quantityValue.innerHTML=item.quantity;
+         priceValue.innerHTML="$"+item.price;
+         amountValue.innerHTML="$"+item.quantity*item.price;
+         table.insertBefore(inputLine,table.childNodes[1]);
+         inputLine.appendChild(fileValue);
+         inputLine.appendChild(productValue);
+         inputLine.appendChild(quantityValue);
+         inputLine.appendChild(priceValue);
+         inputLine.appendChild(amountValue);
+         img.className="img-thumbnail";
+         amountValue.className="amount";
+      }
+   
+      function calculate(){
+         var subtotal=0
+         var amount=document.getElementsByClassName("amount");
+         for(var i=0;i<amount.length;i++){
+            amountValue=amount[i].innerHTML;
+            amountValue=Number(amountValue.substr(1));
+            subtotal=subtotal+amountValue
+         }
+         var money=document.getElementsByClassName("money");
+         tax=0.1*subtotal;
+         shipping=40;
+         if (subtotal > 1000) shipping=0;
+         grandtotal=subtotal+tax+shipping;
+         money[0].innerHTML="$"+subtotal;
+         money[1].innerHTML="$"+tax;
+         money[2].innerHTML="$"+shipping;
+         money[3].innerHTML="$"+grandtotal;
+      }
+      
+      item=[item2,item1];
+      
+      for(var i=0;i<item.length;i++){
+         genLine(item[i]);
+      }
+      calculate();
+
+   </script>
+   
+
+
+
+
+
 
 
     <!-- Bootstrap core JavaScript
