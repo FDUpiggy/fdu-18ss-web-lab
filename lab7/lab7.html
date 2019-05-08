@@ -2,7 +2,7 @@
 <head>
 <title>Chapter 10</title>
 <link rel="stylesheet" href="lab7.css">
-<script>
+<script src="./jquery-3.4.1.min.js">
 </script>      
 </head>    
 <body class="tiled">
@@ -37,7 +37,42 @@
     </div>
 </main>
 <script>
+    $(document).ready(function(){
+        $("div img").click(function(){
+           src=$(this).attr("src");
+           alt=$(this).attr("alt");
+           title=$(this).attr("title");
+           src=src.replace("small","medium");
+           $("figure img").attr("src",src);
+           $("figcaption").text("");
+           var em=$("<em></em>").text(alt);
+           $("figcaption").append(em,$("<br>"),title);
+        });
 
+        $("input").change(function(){
+            var sliderOpacity=document.getElementById("sliderOpacity").value; 
+            var sliderSaturation=document.getElementById("sliderSaturation").value;
+            var sliderBrightness=document.getElementById("sliderBrightness").value;
+            var sliderHue=document.getElementById("sliderHue").value;
+            var sliderGray=document.getElementById("sliderGray").value;
+            var sliderBlur=document.getElementById("sliderBlur").value;
+            var filter="opacity("+sliderOpacity+"%) saturate("+sliderSaturation+"%) brightness("+sliderBrightness+"%) hue-rotate("+sliderHue+"deg) grayscale("+sliderGray+"%) blur("+sliderBlur+"px)";
+            $("figure img").css({"filter":filter,"-webkit-filter":filter});
+            document.getElementById("numOpacity").innerHTML=document.getElementById("sliderOpacity").value;
+            document.getElementById("numSaturation").innerHTML=document.getElementById("sliderSaturation").value;
+            document.getElementById("numBrightness").innerHTML=document.getElementById("sliderBrightness").value;
+            document.getElementById("numHue").innerHTML=document.getElementById("sliderHue").value;
+            document.getElementById("numGray").innerHTML=document.getElementById("sliderGray").value;
+            document.getElementById("numBlur").innerHTML=document.getElementById("sliderBlur").value;
+
+
+
+        });
+
+        $("button").click(function(){
+            $("figure img").css({"filter":"none","-webkit-filter":"none"});
+        });
+    });
 </script>    
 </body>   
 </html>
