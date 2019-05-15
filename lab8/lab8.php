@@ -9,9 +9,15 @@ $shippingFlatAmount = 200;
 // 计算 subtotal, shipping, grand total
 // grand total = subtotal + shipping
 // 如果subtotal值超过阈值，则为100；反之则为$shippingFlatAmount
-$subtotal = 0;
-$shipping = 0;
-$grandTotal = 0;
+$subtotal = $quantity1 * $price1 + $quantity2 * $price2 + $quantity3 * $price3 + $quantity4 * $price4;
+
+if($subtotal > $shippingThreshold){
+  $shipping = 100;
+} else {
+  $shipping = $shippingFlatAmount;
+}
+
+$grandTotal = $subtotal + $shipping;
 
 ?>
 
@@ -38,6 +44,8 @@ $grandTotal = 0;
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer
             mdl-layout--fixed-header">
 
+  <?php include 'header.inc.php'; ?>
+  <?php include 'left.inc.php'; ?>
   <main class="mdl-layout__content mdl-color--grey-50">
     <header class="mdl-color--blue-grey-200">
       <h4>Order Summaries</h4>
