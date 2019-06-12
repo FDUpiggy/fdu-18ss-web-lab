@@ -43,14 +43,18 @@
                 <option value="0">Select Continent</option>
                 <?php
                 //Fill this place
-
                 //****** Hint ******
                 //display the list of continents
-
+                $db = new mysqli("localhost:3306","root","123456","travel");
+                if (!$db)
+                  {
+                    die('Could not connect: ' . mysql_error());
+                  }
+                $sql = "SELECT ContinentCode,ContinentName FROM Continents ";
+                $result =$db -> query($sql);
                 while($row = $result->fetch_assoc()) {
                   echo '<option value=' . $row['ContinentCode'] . '>' . $row['ContinentName'] . '</option>';
                 }
-
                 ?>
               </select>     
               
@@ -58,7 +62,16 @@
                 <option value="0">Select Country</option>
                 <?php 
                 //Fill this place
-
+                $db = new mysqli("localhost:3306","root","123456","travel");
+                if (!$db)
+                  {
+                    die('Could not connect: ' . mysql_error());
+                  }
+                $sql = "SELECT ISO,CountryName FROM Countries ";
+                $result =$db -> query($sql);
+                while($row = $result->fetch_assoc()) {
+                  echo '<option value=' . $row['ISO'] . '>' . $row['CountryName'] . '</option>';
+                }
                 //****** Hint ******
                 /* display list of countries */ 
                 ?>
@@ -74,8 +87,37 @@
 
 		<ul class="caption-style-2">
             <?php 
+            $getCountry ='';
+            $getContinent ='';
+            $getCountry = $_GET["country"];
+            $getContinent = $_GET["continent"];
             //Fill this place
-
+            $db = new mysqli("localhost:3306","root","123456","travel");
+            if (!$db)
+              {
+                die('Could not connect: ' . mysql_error());
+              }
+            $sql = "SELECT ImageID,Path,Title,ContinentCode,CountryCodeISO FROM ImageDetails ";
+            if ($getCountry && !$getContinent)
+            $sql = "SELECT ImageID,Path,Title,ContinentCode,CountryCodeISO FROM ImageDetails  WHERE CountryCodeISO = ".$getCountry;
+            if (!$getCountry && $getContinent)
+            $sql = "SELECT ImageID,Path,Title,ContinentCode,CountryCodeISO FROM ImageDetails  WHERE ContinentCode = ". $getContinent;
+            if ($getCountry && $getContinent) 
+            $sql = "SELECT ImageID,Path,Title,ContinentCode,CountryCodeISO FROM ImageDetails  WHERE CountryCodeISO = ".$getCountry ."AND ContinentCode = ". $getContinent;
+            $result =$db -> query($sql);
+            while($row = $result->fetch_assoc()) {
+              echo '<li>';
+              echo '<a href="detail.php?id='. $row["ImageID"]. '" class="img-responsive">';
+                echo '<img src="images/square-medium/'.$row["Path"].'" alt="'.$row["Title"].'">';
+                echo '<div class="caption">';
+                  echo '<div class="blur"></div>';
+                   echo '<div class="caption-text">';
+                    echo '<p>'.$row["Title"].'</p>';
+                  echo '</div>';
+                echo '</div>';
+              echo '</a>';
+            echo '</li>';
+            }
             //****** Hint ******
             /* use while loop to display images that meet requirements ... sample below ... replace ???? with field data
             <li>
